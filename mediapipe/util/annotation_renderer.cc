@@ -56,8 +56,8 @@ bool NormalizedtoPixelCoordinates(double normalized_x, double normalized_y,
     VLOG(1) << "Normalized coordinates must be between 0.0 and 1.0";
   }
 
-  *x_px = static_cast<int32>(round(normalized_x * image_width));
-  *y_px = static_cast<int32>(round(normalized_y * image_height));
+  *x_px = static_cast<int32_t>(round(normalized_x * image_width));
+  *y_px = static_cast<int32_t>(round(normalized_y * image_height));
 
   return true;
 }
@@ -552,6 +552,16 @@ void AnnotationRenderer::DrawText(const RenderAnnotation& annotation) {
     origin.y += text_size.height / 2;
   }
 
+  if (text.outline_thickness() > 0.0) {
+    const int background_thickness = ClampThickness(
+        round((annotation.thickness() + 2.0 * text.outline_thickness()) *
+              scale_factor_));
+    const cv::Scalar outline_color =
+        MediapipeColorToOpenCVColor(text.outline_color());
+    cv::putText(mat_image_, text.display_text(), origin, font_face, font_scale,
+                outline_color, background_thickness, /*lineType=*/8,
+                /*bottomLeftOrigin=*/flip_text_vertically_);
+  }
   cv::putText(mat_image_, text.display_text(), origin, font_face, font_scale,
               color, thickness, /*lineType=*/8,
               /*bottomLeftOrigin=*/flip_text_vertically_);

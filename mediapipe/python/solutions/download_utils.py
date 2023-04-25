@@ -17,7 +17,7 @@ import os
 import shutil
 import urllib.request
 
-_OSS_URL_PREFIX = 'https://github.com/google/mediapipe/raw/master/'
+_GCS_URL_PREFIX = 'https://storage.googleapis.com/mediapipe-assets/'
 
 
 _GCS_URL_PREFIX = 'https://storage.googleapis.com/mediapipe-assets/'
